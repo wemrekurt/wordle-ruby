@@ -28,8 +28,7 @@ namespace '/api/v1' do
     end
   end
 
-  get '/check/:word' do |word|
-    wordle = 'erika'
+  def wordle_map(word, wordle)
     found = $trie.search(word)
     li = []
     if found
@@ -37,7 +36,16 @@ namespace '/api/v1' do
         li << (wordle.include?(char) ? (wordle[j] == char ? 'g' : 'y') : 'r')
       end
     end
-    { word: word, found: found, map: li }.to_json
+    { word: word, found: found, map: li }
+  end
+
+  get '/check/:word' do |word|
+    wordle = 'erika'
+    wordle_map(word, wordle).to_json
+  end
+
+  get '/check/:word/:wordle' do |word, wordle|
+    wordle_map(word, wordle).to_json
   end
 end
 
